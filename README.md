@@ -1,4 +1,3 @@
-# hello-world
-created to have a quick learn on Git
-This is a test
-This is the secund test
+# Machine-Learning
+created to have a back up of all my scripts both Python and R
+never delete this repo
