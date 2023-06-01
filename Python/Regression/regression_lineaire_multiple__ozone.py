@@ -1,6 +1,6 @@
 #============
-# REGRESSION LINEAIRE SIMPLE
-# Objectif : expliquer et prédire les valeurs d'une feature
+# REGRESSION LINEAIRE MULTIPLE
+# Objectif : expliquer et prédire les valeurs de plusieurs features
 #============
 
 #============ description des données
@@ -59,21 +59,17 @@ plt.figure(figsize = (16,10))
 sns.heatmap(corr_matrix, cmap = 'RdBu_r', mask = mask, annot = True)
 plt.show()
 
-#============ variable explicative
-x = ozone_df['T12'].to_numpy()
-x.shape
+"""
+Problematique : On veut déterminer les variables qui ont un impact sur la concentration journalière en ozone
+"""
 
-sns.histplot(data = x)
+#============ variables explicatives
+x = ozone_df.drop(['obs', 'maxO3', 'vent', 'pluie'], axis=1).to_numpy()
+x.shape
 
 #============ variable à expliquer
 y = ozone_df['maxO3'].to_numpy()
 y.shape
-
-sns.histplot(data = y)
-
-"""
-Problematique : On veut savoir s'il y a un lien entre la concentration d'ozone et la température à un moment donné de la journée
-"""
 
 #============ séparation des données : train - test
 from sklearn.model_selection import train_test_split
@@ -82,101 +78,97 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuff
 #============ MODELE 1 - entrainement du modèle
 from sklearn.linear_model import LinearRegression
 model1 = LinearRegression()
-model1.fit(x_train.reshape(-1,1), y_train.reshape(-1,1))
+model1.fit(x_train, y_train)
 
-#============ évaluation du modèle sur le jeu d'entrainement
-x_train = x_train.reshape(-1,1)
+#============ prédictions sur les jeux d'entrainement et de test
 y_predict_train = model1.predict(x_train)
+y_predict_test = model1.predict(x_test)
 
+#============ évaluation du modèle sur les jeux d'entrainement et de test
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 
-y_predict_train = model1.predict(x_train.reshape(-1,1))
-mse_train = mean_squared_error(y_train, y_predict_train)
-print("mse =", mse_train)
-
 rmse_train = mean_squared_error(y_train, y_predict_train, squared = False)
-print("rmse =", rmse_train)
-
 r2_train = r2_score(y_train, y_predict_train)
-print("R² =", r2_train)
 
-#============ MODELE 1 - évaluation du modèle sur le jeu de test
-x_test = x_test.reshape(-1,1)
-y_predict_test = model1.predict(x_test)
+rmse_test = mean_squared_error(y_test, y_predict_test, squared = False)
+r2_test = r2_score(y_test, y_predict_test)
 
-#============ RMSE
-RMSE_test = mean_squared_error(y_test, y_predict_test, squared = False)
-RMSE_test
+#============ paramètres du modèle
+m = model1.coef_[0] # Le paramètre bêta1 (la pente) représente la valeur prédite de y lorsque x augmente d'une unité.
+c = model1.intercept_ # bêta0 représente la valeur prédite de y lorsque x vaut 0.
 
-#============ coefficient d'ajustement (R²)
-R_squared_test = r2_score(y_test, y_predict_test)
-R_squared_test
+#============ valeurs reelles vs valeurs predites
+scores = {}
+scores['realite'] = (y_train,
+                  y_test)
+scores['prediction'] = (y_predict_train.reshape(-1,1).round(2),
+                y_predict_test.reshape(-1,1).round(2))
+scores_df = pd.DataFrame(scores).transpose()
+scores_df.columns = ['Train', 'Test']
+print(scores_df)
+
+#============ table des métriques
+metrics = {}
+metrics['r2'] = (r2_train.round(3),
+                  r2_test.round(3))
+metrics['rmse'] = (rmse_train,
+                  rmse_test)
+metrics_df = pd.DataFrame(metrics).transpose()
+metrics_df.columns = ['Train', 'Test']
+print(metrics_df)
+
+#============ variables d'impacts
+# on visualise les coefficients des features
+coefs = pd.DataFrame(model1.coef_, columns=['Coefficients'], index = pd.DataFrame(ozone_df).drop(['obs', 'maxO3', 'vent', 'pluie'], axis=1).columns)
+
+coefs.plot(kind='barh', figsize=(9, 5))
+plt.title('Regression linéaire : model 1')
+plt.axvline(x=0, color='.5')
+plt.subplots_adjust(left=.3)
+
 
 """Peut-on améliorer le R² ? Si oui, de quelle(s) façon(s) ?"""
 
-#============ MODELE 2 - entrainement du modèle
-# on recherche des individus extremes
-import plotly.express as px
-fig = px.box(ozone_df, y="T12")
-fig.show()
+#============ MODELE 2 - entrainement du modèle avec stepwise
+# pip install stepwise-regression
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from stepwise_regression import step_reg
 
-#============ affichage des valeurs extrêmes
-ozone_df[ozone_df["T12"]>= 32.7]
+#============ statsmodels avec toutes les features du jeu d'entrainement
+# on passe de numpy array à un DataFrame
+x_train_df = pd.DataFrame(x_train, columns=['T9', 'T12', 'T15', 'Ne9', 'Ne12', 'Ne15', 'Vx9', 'Vx12', 'Vx15', 'maxO3v'])
+y_train_df = pd.DataFrame(y_train, columns=['maxO3'])
 
-#============ supprimons les lignes 21 et 79 dans le jeu de données initial
-ozone_df = ozone_df.drop(index=[21, 79])
+model_smf = smf.ols(formula='y_train_df ~ T9 + T12 + T15 + Ne9 + Ne12 + Ne15 + Vx9 + Vx12 + Vx15 + maxO3v', data = x_train_df).fit()
 
-#============ on vérifie la dimension du nouveau tableau
-ozone_df.shape
+#============ resultats de statsmodels
+print(model_smf.summary())
 
-#============ variable explicative
-x = ozone_df['T12'].to_numpy()
-x.shape
+#============ model avec stepwise
+backselect = step_reg.backward_regression(x_train_df, y_train_df, 0.05, verbose=True) # 0.05 est la valeur seuil p-value
+backselect
 
-#============ variable à expliquer
-y = ozone_df['maxO3'].to_numpy()
-y.shape
+#============ nouveau modèle après stepwise
+model_smf = smf.ols(formula='y_train_df ~ T12 + Ne9 + maxO3v', data = x_train_df).fit()
+print(model_smf.summary())
 
-#============ séparation des données : train - test
-from sklearn.model_selection import train_test_split
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = True, random_state = 42) #shuffle : mélange pour tirage aléatoire
+#============ statsmodels avec toutes les features du jeu de test
+# on passe de numpy array à un DataFrame
+x_test_df = pd.DataFrame(x_test, columns=['T9', 'T12', 'T15', 'Ne9', 'Ne12', 'Ne15', 'Vx9', 'Vx12', 'Vx15', 'maxO3v'])
+y_test_df = pd.DataFrame(y_test, columns=['maxO3'])
 
-#============ entrainement du modèle 2
-model2 = LinearRegression()
-model2.fit(x_train.reshape(-1,1), y_train.reshape(-1,1))
+model_smf = smf.ols(formula='y_test_df ~ T9 + T12 + T15 + Ne9 + Ne12 + Ne15 + Vx9 + Vx12 + Vx15 + maxO3v', data = x_test_df).fit()
 
-y_predict_train = model2.predict(x_train.reshape(-1,1))
+#============ resultats de statsmodels
+print(model_smf.summary())
 
-#============ évaluation du modèle sur le jeu d'entrainement et comparaison
-rmse_train2 = mean_squared_error(y_train, y_predict_train, squared = False)
-print("rmse_2 =", rmse_train, " vs ", "rmse_2 = ", rmse_train2)
+#============ model avec stepwise
+backselect = step_reg.backward_regression(x_test_df, y_test_df, 0.05, verbose=True) # 0.05 est la valeur seuil p-value
+backselect
 
-r2_train2 = r2_score(y_train, y_predict_train)
-print("R²_1 =", r2_train, " vs ", "R²_2 = ", r2_train2)
-
-#============ MODELE 2 - évaluation du modèle sur le jeu de test
-x_test = x_test.reshape(-1,1)
-y_predict_test = model2.predict(x_test)
-
-#============ RMSE
-RMSE_test = mean_squared_error(y_test, y_predict_test, squared = False)
-RMSE_test
-
-#============ coefficient d'ajustement (R²)
-R_squared_test = r2_score(y_test, y_predict_test)
-R_squared_test
-
-"""Le modèle 2 n'est pas meilleur que le modèle 1.
-Il semblerait que la suppression des valeurs extrêmes aient engendré des efforts de bords
-"""
-
-
-
-
-
-
-
-
-
+#============ nouveau modèle après stepwise
+model_smf = smf.ols(formula='y_test_df ~ T12 + Ne9 + maxO3v', data = x_test_df).fit()
+print(model_smf.summary())
 

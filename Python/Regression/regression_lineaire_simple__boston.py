@@ -58,6 +58,10 @@ plt.figure(figsize = (16,10))
 sns.heatmap(corr_matrix, cmap = 'RdBu_r', mask = mask, annot = True)
 plt.show()
 
+"""
+Problematique : on veut savoir si le prix des maisons (valeur médiane) dépend du nombre moyen de chambres
+"""
+
 #============ variable explicative
 x = df['rm'].to_numpy()
 x.shape
@@ -65,10 +69,6 @@ x.shape
 #============ variable à expliquer
 y = df['medv'].to_numpy()
 y.shape
-
-"""
-Problematique : on veut savoir si le prix des maisons (valeur médiane) dépend du nombre moyen de chambres
-"""
 
 #============ relation lineaire entre rm et medv
 import plotly.graph_objects as go
@@ -84,7 +84,7 @@ fig.show()
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = True, random_state = 42) #shuffle : mélange pour tirage aléatoire
 
-#============ Distribution des données d'entrainement et de test
+#============ distribution des données d'entrainement et de test
 fig = go.Figure()
 
 fig.add_trace(go.Scatter(x = x_train, y = y_train, mode = 'markers', name = 'Train'))
@@ -96,21 +96,16 @@ fig.update_layout(
         yaxis_title="MEDV")
 fig.show()
 
-#============ vérification des données avant entrainement
-x_train # x_train est un vecteur ligne
-x_train = x_train.reshape(-1,1) # x_train est un vecteur colonne
-x_train
-
 #============ entrainement du modèle
 from sklearn.linear_model import LinearRegression
 model = LinearRegression()
-model.fit(x_train, y_train)
+model.fit(x_train.reshape(-1,1), y_train.reshape(-1,1))
 
 #============ paramètres du modèle
 m = model.coef_[0] # Le paramètre bêta1 (la pente) représente la valeur prédite de y lorsque x augmente d'une unité.
 c = model.intercept_ # bêta0 représente la valeur prédite de y lorsque x vaut 0.
 
-#============ Droite de regression
+#============ droite de regression
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = True, random_state = 42)
 fig = go.Figure()
 
@@ -123,9 +118,8 @@ fig.update_layout(
         yaxis_title="MEDV")
 fig.show()
 
-#============ évaluation du modèle sur le jeu d'entrainement
-x_train = x_train.reshape(-1,1)
-y_predict_train = model.predict(x_train)
+#============ prédictions sur le jeu d'entrainement
+y_predict_train = model.predict(x_train.reshape(-1,1))
 
 #============ on affiche les valeurs prédites de y
 pd.DataFrame(y_predict_train.reshape(-1,1), columns=['y_predicted']).head()
@@ -133,16 +127,17 @@ pd.DataFrame(y_predict_train.reshape(-1,1), columns=['y_predicted']).head()
 #============ On affiche les valeurs réelles de y
 pd.DataFrame(y_train.reshape(-1,1), columns=['y_real']).head()
 
-#============ erreur quadratique moyenne (MSE)
+#============ évaluation du modèle sur le jeu d'entrainement
+# erreur quadratique moyenne (MSE)
 from sklearn.metrics import mean_squared_error
 MSE_train = mean_squared_error(y_train, y_predict_train)
 MSE_train
 
-#============  racine carrée de l'erreur quadratique moyenne (RMSE)
+# racine carrée de l'erreur quadratique moyenne (RMSE)
 RMSE_train = mean_squared_error(y_train, y_predict_train, squared = False)
 RMSE_train
 
-#============ coefficient d'ajustement (R²)
+# coefficient d'ajustement (R²)
 from sklearn.metrics import r2_score
 R_squared_train = r2_score(y_train, y_predict_train)
 R_squared_train
