@@ -109,7 +109,7 @@ mse_train
 
 """
 La racine carrée de la MSE
-Contrairement à la MSE, la RMSE s’exprime dans la même unité que la variable à prédire et est par conséquent plus facile à interpréter. 
+Contrairement à la MSE, la RMSE s'exprime dans la même unité que la variable à prédire et est par conséquent plus facile à interpréter. 
 Ces métriques quantifient les erreurs réalisées par le modèle. Plus elles sont élevées, moins le modèle est performant. 
 Cette métrique est très sensible aux outliers (vraies valeurs de Y).
 La prédiction sera donc souvent très éloignée des valeurs aberrantes.

@@ -125,3 +125,12 @@ print(metrics_df)
 """
 Le modèle ne peut plus être amélioré
 """
+
+#============ variables d'impacts
+# on visualise les coefficients des features
+coefs = pd.DataFrame(model1.coef_, columns=['Coefficients'], index = pd.DataFrame(mtcars_df).drop(['model'], axis=1).columns)
+
+coefs.plot(kind='barh', figsize=(9, 5))
+plt.title('Regression linéaire : model 1')
+plt.axvline(x=0, color='.5')
+plt.subplots_adjust(left=.3)
