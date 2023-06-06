@@ -5,18 +5,15 @@
 
 #============ description des données
 """
-ID number
-Diagnosis (M = malignant, B = benign)
-radius (mean of distances from center to points on the perimeter)
-texture (standard deviation of gray-scale values)
-perimeter
-area
-smoothness (local variation in radius lengths)
-compactness (perimeter^2 / area - 1.0)
-concavity (severity of concave portions of the contour)
-concave points (number of concave portions of the contour)
-symmetry
-fractal dimension ("coastline approximation" - 1)
+On dispose de données médicales de 53 patients. 
+L'objectif est de prédire qui est atteint ou non du cancer de la prostate.
+
+Age = âge du patient au moment du diagnostic
+Acide = niveau d'acide phosphatase sérique (protéine ?)
+Rayonx = résultat d'une analyse par rayonX (X=0, négatif, 1=positif)
+Taille = la taille de la tumeur (0 = petite, 1=grande)
+Grade = l'état de la tumeur déterminé par biopsie (0=moyen, 1=grave) (prélèvement?)
+Log.acide = logarithme népérien du niveau d'acidité
 """
 
 #============ vérifier la propreté du code
@@ -36,8 +33,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 #============ importation des données
-path = "https://raw.githubusercontent.com/JoyceMbiguidi/data/main/Breast_Cancer.csv"
-raw_df = pd.read_csv(path, sep = ",").drop(['id', 'Unnamed: 32'], axis = 1)
+path = "https://raw.githubusercontent.com/JoyceMbiguidi/data/main/cancerprostate.txt"
+raw_df = pd.read_csv(path, sep = ";").drop(['log.acid'], axis = 1)
 
 #============ copie du dataset brut
 cancer_df = raw_df
@@ -53,20 +50,10 @@ print(cancer_df.shape)
 print(cancer_df.isnull().sum())
 
 #============ fréquence des modalités
-cancer_df["diagnosis"].value_counts()
-
-#============ recodage des modalités
-def diagnosis(x):
-    if x == 'M':
-        return 1
-    else:
-        return 0
-    
-cancer_df['label'] = cancer_df['diagnosis'].apply(diagnosis)
-cancer_df.head()
+cancer_df["Y"].value_counts()
 
 #============ matrice de correlation
-corr_matrix = cancer_df.drop(['diagnosis', 'label'], axis = 1).corr().round(2)
+corr_matrix = cancer_df.corr().round(2)
 
 mask = np.triu(np.ones_like(corr_matrix, dtype=bool)) # Generate a mask for the upper triangle
 plt.figure(figsize = (16,10))
@@ -75,15 +62,15 @@ plt.show()
 
 
 """
-Problematique : on veut expliquer et prédire les facteurs qui ont une influence sur la survenue du cancer du sein
+Problematique : on veut expliquer et prédire les facteurs qui ont une influence sur la survenue du cancer de la prostate
 """
 
 #============ variables explicatives
-x = cancer_df.drop(['diagnosis', 'label'], axis=1).to_numpy()
+x = cancer_df.drop(['Y'], axis=1).to_numpy()
 x.shape
 
 #============ variable à expliquer
-y = cancer_df['label'].to_numpy()
+y = cancer_df['Y'].to_numpy()
 y.shape
 
 #============ séparation des données : train - test
@@ -171,11 +158,11 @@ print("F1 train = ", F1_train.round(3))
 """
 1. Précision : la Précision est le rapport entre les Vrais Positifs et tous les Positifs proposés. 
 Ici, la précision mesure les patients que nous identifions (algorithme) correctement 
-comme ayant un cancer du sein parmi tous les patients qui en sont réellement atteints.
+comme ayant un cancer de la prostate parmi tous les patients qui en sont réellement atteints.
 On détecte les patients malades avec beaucoup de précision si cette valeur est élevée.
 
 2.Recall : ou rappel (sensibilité), est la mesure de notre modèle identifiant correctement les Vrais Positifs. 
-Ainsi, pour tous les patients qui ont réellement un cancer du sein, le rappel nous indique combien 
+Ainsi, pour tous les patients qui ont réellement un cancer de la prostate, le rappel nous indique combien 
 nous avons correctement identifié comme ayant un cancer.
 """
 
@@ -260,9 +247,14 @@ metrics_df = pd.DataFrame(metrics).transpose()
 metrics_df.columns = ['Train', 'Test']
 print(metrics_df)
 
+"""
+accuracy élevé dans l'entrainement, mais très faible dans le test : overfitting
+on va donc utiliser des hyper paramètres.
+"""
+
 #============ importance des variables
 importances = pd.DataFrame(data={
-    'Attribute': cancer_df.drop(['diagnosis','label'], axis = 1).columns,
+    'Attribute': cancer_df.drop(['Y'], axis = 1).columns,
     'Coefficients': model.coef_[0].round(3),
     'Exponentielle': np.exp(model.coef_[0]).round(2)})
 
@@ -281,9 +273,27 @@ plt.xticks(rotation='vertical')
 plt.show()
 
 """
-Texture_worst contribue très fortement à la survenance du cancer du sein. Sa valeur est positive et son coefficient le plus élevé. 
-Ainsi, on a 4 fois plus de chances d'avoir le Cancer du sein, lorsque la cellule est de type "Texture_worst".
+Texture_worst contribue très fortement à la survenance du cancer de la prostate. Sa valeur est positive et son coefficient le plus élevé. 
+Ainsi, on a 4 fois plus de chances d'avoir le cancer de la prostate, lorsque la cellule est de type "Texture_worst".
 
 On peut alors proposer au patient des aliments ou médicaments qui ralentissent la viellissement cellulaire, 
 voire une pratique sportive, en plus d'un traitement adéquat si la maladie est avérée.
 """
+
+#============
+# Hyperparameter tunning
+#============
+
+from sklearn.model_selection import GridSearchCV
+parameters = [{'penalty': ['l2'], 'C': [0.001, 0.01, 0.1, 1, 10, 100], 'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga']}]
+grid_search = GridSearchCV(estimator = model,
+                           param_grid = parameters,
+                           scoring = 'accuracy',
+                           cv = 10,
+                           n_jobs = -1)
+grid_search.fit(x_train, y_train)
+best_accuracy_log = grid_search.best_score_
+best_parameters = grid_search.best_params_
+print(best_accuracy_log)
+print(best_parameters)
+
