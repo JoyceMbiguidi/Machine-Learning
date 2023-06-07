@@ -5,18 +5,19 @@
 
 #============ description des données
 """
-Assurance maladie
-Le jeu de données insurance.csv contient des informations concernant des assurés et leurs frais de santé (colonne expenses). 
-L'objectif est de construire un modèle prédictif pour prédire ces frais pour mieux adapter le coût de l'assurance.
+	Le jeu de données insurance.csv contient des informations concernant des assurés et leurs frais de santé 
+	(colonne expenses). L'objectif est de construire un modèle prédictif (regression linéaire multiple) 
+	pour prédire ces frais pour mieux adapter le coût de l'assurance.
 
-âge : âge du principal bénéficiaire
-sexe : sexe de l'assureur, féminin ou masculin
-bmi : indice de masse corporelle, permettant de comprendre le corps, les poids relativement élevés ou faibles par rapport à la taille, 
-    indice objectif de poids corporel (kg/m ^ 2) utilisant le rapport taille sur poids, idéalement 18,5 à 24,9
-enfants : Nombre d'enfants couverts par l'assurance maladie / Nombre de personnes à charge
-fumeur : Fumer
-région : zone de résidence du bénéficiaire aux États-Unis, nord-est, sud-est, sud-ouest, nord-ouest.
-charges : Frais médicaux individuels facturés par l'assurance maladie
+
+age: age of primary beneficiary
+sex: insurance contractor gender, female, male
+bmi: Body mass index, providing an understanding of body, weights that are relatively high or low relative to height,
+    objective index of body weight (kg / m ^ 2) using the ratio of height to weight, ideally 18.5 to 24.9
+children: Number of children covered by health insurance / Number of dependents
+smoker: Smoking
+region: the beneficiary's residential area in the US, northeast, southeast, southwest, northwest.
+charges: Individual medical costs billed by health insurance
 """
 
 #============ vérifier la propreté du code
