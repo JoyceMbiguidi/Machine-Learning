@@ -1,5 +1,5 @@
 #============
-# REGRESSION LINEAIRE MULTIPLE
+# ARBRES DE DECISIONS POUR LA REGRESSION
 # Objectif : expliquer et prédire les valeurs de plusieurs features
 #============
 
