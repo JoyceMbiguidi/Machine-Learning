@@ -28,7 +28,7 @@ segment
 #============ chargement des bibliothèques
 import pandas as pd
 import numpy as np
-from sklearn.base import r2_score
+from sklearn.metrics import r2_score
 
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
@@ -127,6 +127,9 @@ plt.legend(loc='best',fancybox=True, shadow=True)
 plt.grid(True)
 plt.show()
 
+#============ feature importance modele 1
+plt.barh(cars_df.drop(['priceUSD'], axis=1).columns, model1.feature_importances_)
+
 """ 
 pas d'overfitting, les R2 sont corrects et les erreurs sont quasi similaires.
 peut-on encore améliorer ce modèle ?
@@ -145,7 +148,7 @@ gridsearchcv.fit(x_train, y_train)
 gridsearchcv.best_params_
 
 #============ evaluation du nouveau modele
-model_tree = DecisionTreeRegressor(random_state = 42, max_depth = 14)
+model_tree = DecisionTreeRegressor(random_state = 42, max_depth = gridsearchcv.best_params_.get('max_depth'))
 model_tree.fit(x_train,y_train)
 
 y_predict_train = model_tree.predict(x_train)
