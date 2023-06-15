@@ -17,10 +17,8 @@ Problématique : On veut savoir ce qui provoque le ronflement autrement dit, que
 # invoke flake8 (bash) : flake8
 
 #============ chargement des bibliothèques
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import plot_tree
