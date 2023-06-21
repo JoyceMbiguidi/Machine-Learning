@@ -119,7 +119,6 @@ Peut-on améliorer le R² ? Si oui, de quelle(s) façon(s) ?
 
 #============ MODELE 2 avec stepwise
 #============ statsmodels avec toutes les features du jeu d'entrainement
-import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from stepwise_regression import step_reg
 
