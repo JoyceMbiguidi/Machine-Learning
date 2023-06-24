@@ -74,6 +74,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 
 from sklearn.ensemble import RandomForestRegressor
+
 #============ importation des données
 path = "https://raw.githubusercontent.com/JoyceMbiguidi/data/main/bike_hour.csv"
 raw_df = pd.read_csv(path, sep = ";")

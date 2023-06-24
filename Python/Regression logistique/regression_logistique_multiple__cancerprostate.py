@@ -74,7 +74,6 @@ y = cancer_df['Y'].to_numpy()
 y.shape
 
 #============ séparation des données : train - test
-from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = True, random_state = 42, stratify = y)
 
 #============ standardisation des données
