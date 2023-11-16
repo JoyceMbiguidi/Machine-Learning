@@ -6,7 +6,7 @@
 #============ description des données
 """
 Nous disposons d'un ensemble de caractéristiques décrivant des bouteilles de vin rouge et blanc.
-Peut-on prédire la couleur du vin en fonction de ces caractéristiques ?
+Peut-on prédire la qualité du vin en fonction de ses caractéristiques ?
 
 fixed acidity : "Acidité fixe" se réfère à la quantité d'acides non volatils présents dans le vin, 
                 notamment les acides tartrique, malique et citrique. Elle est l'un des caractères chimiques utilisés 
@@ -33,7 +33,7 @@ sulphates : Les sulfates dans le vin font référence aux composés chimiques co
     de soufre, utilisés comme additifs pour diverses raisons, notamment la protection contre l'oxydation et 
     la préservation de la qualité du vin. Les sulfates peuvent également influencer l'arôme, la saveur et la stabilité du vin.
 alcohol : Un taux d'alcool plus élevé peut contribuer à une sensation de chaleur en bouche et à une plus grande concentration de saveurs.
-quality
+quality : bon ou mauvais, selon une note >5 et <5
 color
 """
 
@@ -91,26 +91,24 @@ plt.show()
 
 #============ recodate de la cible
 def change_values(x):
-    if x == "red" :
-        return '1'
+    if x > 5 :
+        return 'bon'
     else :
-        return '0'
+        return 'mauvais'
 
-df['color_'] = df['color'].apply(change_values)
-df['color_'] = pd.to_numeric(df['color_'])
+df['quality'] = df['quality'].apply(change_values)
 
-pass
 
 """
-Problematique : Peut-on prédire la couleur du vin en fonction de ces caractéristiques ?
+Problematique : Peut-on prédire la qualité du vin en fonction de ses caractéristiques ?
 """
 
 #============ variables explicatives
-x = df.drop(['color','color_'], axis = 1).to_numpy()
+x = df.drop(['quality','color'], axis = 1).to_numpy()
 x.shape
 
 #============ variable à expliquer
-y = df['color_'].to_numpy() 
+y = df['quality'].to_numpy() 
 y.shape
 
 #============ séparation des données : train - test
@@ -165,7 +163,7 @@ plt.show()
 print(classification_report(y_test, y_predict_test))
 
 #============ feature importance
-feature_imp = pd.Series(model1.feature_importances_,index=df.drop(['color','color_'], axis = 1).columns).sort_values(ascending=False)
+feature_imp = pd.Series(model1.feature_importances_,index=df.drop(['quality','color'], axis = 1).columns).sort_values(ascending=False)
 feature_imp
 
 #============ creation du graphique
@@ -185,18 +183,18 @@ plt.show()
 """ tentons un modeles avec variables discrétisées. Mais avant, analysons les distributions des variables"""
 
 #============ analyses graphique
-sns.histplot(data=df, x='chlorides', hue='color')
-sns.histplot(data=df, x='total sulfur dioxide', hue='color')
-sns.histplot(data=df, x='volatile acidity', hue='color')
-sns.histplot(data=df, x='density', hue='color')
-sns.histplot(data=df, x='sulphates', hue='color')
-sns.histplot(data=df, x='free sulfur dioxide', hue='color')
-sns.histplot(data=df, x='fixed acidity', hue='color')
-sns.histplot(data=df, x='residual sugar', hue='color')
-sns.histplot(data=df, x='pH', hue='color')
-sns.histplot(data=df, x='citric acid', hue='color')
-sns.histplot(data=df, x='alcohol', hue='color')
-sns.histplot(data=df, x='quality', hue='color')
+sns.histplot(data=df, x='chlorides', hue='quality')
+sns.histplot(data=df, x='total sulfur dioxide', hue='quality')
+sns.histplot(data=df, x='volatile acidity', hue='quality')
+sns.histplot(data=df, x='density', hue='quality')
+sns.histplot(data=df, x='sulphates', hue='quality')
+sns.histplot(data=df, x='free sulfur dioxide', hue='quality')
+sns.histplot(data=df, x='fixed acidity', hue='quality')
+sns.histplot(data=df, x='residual sugar', hue='quality')
+sns.histplot(data=df, x='pH', hue='quality')
+sns.histplot(data=df, x='citric acid', hue='quality')
+sns.histplot(data=df, x='alcohol', hue='quality')
+sns.histplot(data=df, x='quality', hue='quality')
 
 
 #============ discretisons arbitrairement les variables
@@ -211,21 +209,20 @@ df["residual sugar"] = pd.cut(df["residual sugar"], bins = 3, labels = ["faible"
 df["pH"] = pd.cut(df.pH, bins = 3, labels = ["faible", "moyenne", "élevée"])
 df["citric acid"] = pd.cut(df["citric acid"], bins = 3, labels = ["faible", "moyenne", "élevée"])
 df["alcohol"] = pd.cut(df.alcohol, bins = 3, labels = ["faible", "moyenne", "élevée"])
-df["quality"] = pd.cut(df.quality, bins = 2, labels = ["faible", "élevée"])
 
 
 #============ dummy
-df_dummies = pd.get_dummies(df.drop(["color", "color_"], axis = 1))
+df_dummies = pd.get_dummies(df.drop(["color", "quality"], axis = 1))
 
 # concatenation
-df = pd.concat([df["color_"], df_dummies], axis=1)
+df = pd.concat([df["quality"], df_dummies], axis=1)
 
 #============ variables explicatives
-x = df.drop(['color_'], axis = 1).to_numpy()
+x = df.drop(['quality'], axis = 1).to_numpy()
 x.shape
 
 #============ variable à expliquer
-y = df['color_'].to_numpy() 
+y = df['quality'].to_numpy() 
 y.shape
 
 #============ séparation des données : train - test
@@ -272,7 +269,7 @@ plt.show()
 print(classification_report(y_test, y_predict_test))
 
 #============ feature importance
-feature_imp = pd.Series(model2.feature_importances_,index=df.drop(['color_'], axis = 1).columns).sort_values(ascending=False)
+feature_imp = pd.Series(model2.feature_importances_,index=df.drop(['quality'], axis = 1).columns).sort_values(ascending=False)
 feature_imp
 
 #============ creation du graphique
@@ -283,7 +280,44 @@ sns.barplot(x=feature_imp, y=feature_imp.index, palette=clrs)
 
 plt.xlabel('Feature Importance Score')
 plt.ylabel('Features')
-plt.title('RF : Variables importantes dans la prédiction de la couleur de vin rouge')
+plt.title('RF : Variables importantes dans la prédiction de la qualité du vin')
 plt.show()
 
+
+""" nous avons dégradé le modele. Utilisons les hyperparametres en vue de l'optimiser"""
+
+#============ tunning des hyperparametres
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {
+    'bootstrap': [True],
+    'max_depth': [None, 80, 90, 100, 110],
+    'max_features': [2, 3],
+    'min_samples_leaf': [3, 4, 5, 10],
+    'min_samples_split': [8, 10, 12],
+    'n_estimators': [100, 200, 300, 1000]
+}
+
+
+#============ initialisation du modele
+model3 = RandomForestClassifier()
+
+#============ instanciation du model avec grid search
+grid_search = GridSearchCV(estimator = model3, param_grid = param_grid, 
+                      cv = 5, n_jobs = -1, verbose = 2)
+
+#============ fitting
+grid_search.fit(x_train, y_train)
+
+#============ affichage des meilleurs parametres et l'accuracy correspondant
+best_params = grid_search.best_params_
+best_score = grid_search.best_score_
+
+#============ evaluation du meilleur modele sur le jeu de test
+best_model = grid_search.best_estimator_
+test_score = best_model.score(x_test, y_test)
+
+print("Best parameters:", best_params)
+print("Best score:", best_score)
+print("Test score:", test_score)
 

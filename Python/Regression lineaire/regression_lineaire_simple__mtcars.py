@@ -152,12 +152,12 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuff
 
 #============ entrainement du modèle
 from sklearn.linear_model import LinearRegression
-model1 = LinearRegression()
-model1.fit(x_train.reshape(-1,1), y_train.reshape(-1,1))
+model2 = LinearRegression()
+model2.fit(x_train.reshape(-1,1), y_train.reshape(-1,1))
 
 #============ prédictions sur les jeux d'entrainement et de test
-y_predict_train = model1.predict(x_train.reshape(-1,1))
-y_predict_test = model1.predict(x_test.reshape(-1,1))
+y_predict_train = model2.predict(x_train.reshape(-1,1))
+y_predict_test = model2.predict(x_test.reshape(-1,1))
 
 #============ évaluation du modèle sur les jeux d'entrainement et de test
 from sklearn.metrics import mean_squared_error
@@ -170,8 +170,8 @@ rmse_test = mean_squared_error(y_test, y_predict_test, squared = False)
 r2_test = r2_score(y_test, y_predict_test)
 
 #============ paramètres du modèle
-m = model1.coef_[0] # Le paramètre bêta1 (la pente) représente la valeur prédite de y lorsque x augmente d'une unité.
-c = model1.intercept_ # bêta0 représente la valeur prédite de y lorsque x vaut 0.
+m = model2.coef_[0] # Le paramètre bêta1 (la pente) représente la valeur prédite de y lorsque x augmente d'une unité.
+c = model2.intercept_ # bêta0 représente la valeur prédite de y lorsque x vaut 0.
 
 #============ valeurs reelles vs valeurs predites
 scores = {}

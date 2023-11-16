@@ -87,7 +87,6 @@ y = cancer_df['label'].to_numpy()
 y.shape
 
 #============ séparation des données : train - test
-from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = True, random_state = 42, stratify = y)
 
 #============ standardisation des données
@@ -136,6 +135,8 @@ plt.ylabel('Real')
 
 plt.show()
 
+
+
 """
 Vrais négatifs : négatifs correctement prédits (patient sain identifié comme sain)
 Vrais positifs : positifs correctement prédits (patient malade identifié comme malade)
@@ -167,6 +168,49 @@ print("Training Accuracy = ", acc_score_train.round(3))
 print("Training Precision = ", precision_train.round(3))
 print("Training Recall = ", recall_train.round(3))
 print("F1 train = ", F1_train.round(3))
+
+
+
+"""
+>> PRECISION:
+Un "precision_score" de 100 % fait référence à la précision de notre modèle de classification. 
+La précision évalue la capacité du modèle à faire des prédictions correctes parmi les exemples 
+qu'il a classés comme positifs (vrais positifs) par rapport à l'ensemble des exemples qu'il a classés 
+comme positifs (vrais positifs + faux positifs).
+
+Une précision de 100 %" signifie que le modèle a correctement classé 100 % des cas de cancer Malins. 
+Cela indique que le modèle a une capacité relativement élevée à éviter de faire de fausses prédictions positives. 
+En d'autres termes, lorsque le modèle prédit que quelqu'un a a des cellules cancéreuses, il a raison dans environ 100 % des cas.
+
+
+>> RECALL:
+Le rappel est une mesure de performance du modèle de classification.
+Le rappel est une mesure qui évalue la capacité de notre modèle à identifier 
+la totalité des exemples positifs (personnes ayant survécues) dans un ensemble de données. 
+Plus précisément, le rappel mesure la proportion des réellement positifs (vrais M) que 
+le modèle a correctement identifiés par rapport au nombre total de survivants (vrais ou faux) présents dans les données.
+
+Un rappel de 96 % signifie que le modèle a correctement identifié 96 % des cas de cancers Malins dans l'ensemble de données, 
+ce qui est généralement considéré comme un bon résultat. 
+Cependant, cela signifie également que 4 % de M n'ont pas été correctement identifiés par le modèle.
+
+
+>> F1_SCORE
+Un F1-score mesure la performance du modèle de classification. 
+Le F1-score est calculé à partir de deux autres métriques de performance : la précision (precision) et le rappel (recall).
+
+Le F1-score est une métrique particulièrement utile lorsque les classes que vous essayez de prédire ne sont pas équilibrées, 
+c'est-à-dire lorsque l'une des classes est beaucoup plus fréquente que l'autre. 
+Il combine la précision et le rappel en une seule valeur qui tient compte à la fois des vrais positifs 
+(prédictions correctes de la classe positive), des faux positifs (prédictions incorrectes de la classe positive) 
+et des faux négatifs (cas où la classe positive réelle n'a pas été prédite correctement).
+
+Un F1-score de 98 % indique que le modèle a une performance équilibrée en termes de précision et de rappel, 
+ce qui signifie qu'il est capable de faire des prédictions correctes pour la classe des survivants (positifs) 
+tout en minimisant les faux positifs (personnes  décédées prédites comme ayant survécues). 
+Plus le F1-score est élevé, meilleure est la performance du modèle en termes de classification.
+"""
+
 
 """
 1. Précision : la Précision est le rapport entre les Vrais Positifs et tous les Positifs proposés. 

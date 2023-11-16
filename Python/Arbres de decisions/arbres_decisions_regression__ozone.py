@@ -31,7 +31,6 @@ import pandas as pd
 import numpy as np
 
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV
 from sklearn.tree import plot_tree
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_absolute_error
@@ -85,7 +84,6 @@ y = ozone_df['maxO3'].to_numpy()
 y.shape
 
 #============ séparation des données : train - test
-from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = True, random_state = 42) #shuffle : mélange pour tirage aléatoire
 
 #============ MODELE 1 - entrainement du modèle
@@ -93,10 +91,10 @@ model1 = DecisionTreeRegressor(random_state = 42, max_depth = 5)
 model1.fit(x_train, y_train)
 
 #============ visuel de l'arbre
-from sklearn.tree import plot_tree
 plt.figure(figsize=(20,20))
 plot_tree(model1, feature_names=list(ozone_df.drop(['maxO3'], axis=1).columns), filled=True)
 pass
+
 
 #============ prediction des donnees de test
 y_pred = model1.predict(x_test)

@@ -73,7 +73,6 @@ x = df.drop(['Price', 'Latitude', 'Longitude'], axis=1).to_numpy() # feature // 
 y = df['Price'].to_numpy() # target, i.e. la variable cible // variable dépendante // variable à expliquer
 
 #============ standardisation des variables explicatives
-from sklearn import linear_model
 from sklearn.preprocessing import StandardScaler
 scale = StandardScaler()
 

@@ -53,7 +53,7 @@ ronfle_df.head()
 
 #============ variables explicatives
 x = ronfle_df.drop(['ronfle'], axis = 1)
-x.shapes
+x.shape
 
 #============ variable à expliquer
 y = ronfle_df['ronfle']
@@ -66,7 +66,7 @@ model1 = DecisionTreeClassifier(criterion='gini')
 model1.fit(x_train, y_train)
 
 #============ visuel de l'arbre
-plt.figure(figsize=(12,12))
+plt.figure(figsize=(20,20))
 plot_tree(model1, feature_names=list(ronfle_df.columns), filled=True, class_names=str(model1.classes_))
 pass
 

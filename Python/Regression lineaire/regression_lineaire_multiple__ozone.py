@@ -132,7 +132,6 @@ plt.subplots_adjust(left=.3)
 
 #============ MODELE 2 - entrainement du modèle avec stepwise
 # pip install stepwise-regression
-import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from stepwise_regression import step_reg
 

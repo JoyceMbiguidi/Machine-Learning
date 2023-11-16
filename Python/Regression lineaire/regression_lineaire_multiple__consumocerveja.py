@@ -23,15 +23,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.graph_objects as go
 
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
 
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import r2_score
-
-import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from stepwise_regression import step_reg
 
@@ -83,7 +77,6 @@ y = df['Consumodecerveja(litros)'].to_numpy()
 y.shape
 
 #============ séparation des données : train - test
-from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = True, random_state = 42)
 
 #============ statsmodels avec toutes les features du jeu d'entrainement

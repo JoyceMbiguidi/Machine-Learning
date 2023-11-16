@@ -60,11 +60,11 @@ sns.heatmap(corr_matrix, cmap = 'RdBu_r', mask = mask, annot = True)
 plt.show()
 
 """
-Problematique : on veut savoir s'il y a une relation linéaire entre la puissance et la consommation de carburant
+Problematique : on veut savoir s'il y a une relation linéaire entre les variables explicatives et la consommation de carburant
 """
 
 #============ variables explicatives
-x = mtcars_df.drop(['model'], axis=1).to_numpy()
+x = mtcars_df.drop(['model', 'mpg'], axis=1).to_numpy()
 x.shape
 
 sns.histplot(data = x)
@@ -128,7 +128,7 @@ Le modèle ne peut plus être amélioré
 
 #============ variables d'impacts
 # on visualise les coefficients des features
-coefs = pd.DataFrame(model1.coef_, columns=['Coefficients'], index = pd.DataFrame(mtcars_df).drop(['model'], axis=1).columns)
+coefs = pd.DataFrame(model1.coef_, columns=['Coefficients'], index = pd.DataFrame(mtcars_df).drop(['model', 'mpg'], axis=1).columns)
 
 coefs.plot(kind='barh', figsize=(9, 5))
 plt.title('Regression linéaire : model 1')

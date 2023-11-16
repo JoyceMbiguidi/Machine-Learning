@@ -111,8 +111,8 @@ model = LogisticRegression() # initialisation du modèle LOGIT
 model.fit(x_train_scale, y_train)
 
 #============ prédictions sur les jeux d'entrainement et de test
-y_predict_train = model.predict(x_train)
-y_predict_test = model.predict(x_test)
+y_predict_train = model.predict(x_train_scale)
+y_predict_test = model.predict(x_test_scale)
 
 #============ évaluation du modèle sur le jeu d'entrainement
 from sklearn.metrics import confusion_matrix
@@ -144,6 +144,27 @@ plt.ylabel('Real')
 
 plt.show()
 
+
+"""
+Une accuracy de 81 %, fait référence à la précision de notre modèle de classification. 
+L'accuracy ou précision, évalue la performance du modèle qui vient d'effectuer des prédictions.
+
+L'accuracy mesure la proportion des prédictions correctes faites par le modèle par rapport au nombre 
+total d'échantillons de données. Dans le cas d'une accuracy de 81 %, cela signifie que le modèle a 
+correctement classé 81 % des échantillons de données qu'il a traités. 
+En d'autres termes, il a fait des prédictions correctes pour 81 % des cas, 
+tandis que 19 % des prédictions étaient incorrectes.
+
+Il est important de noter que l'accuracy seule ne donne pas toujours une image complète de la 
+performance d'un modèle. Dans certaines situations, d'autres mesures telles que la précision, 
+le rappel, la F1-score ou la matrice de confusion peuvent être nécessaires pour évaluer plus en 
+détail la performance du modèle, en particulier lorsque les classes ne sont pas équilibrées ou que 
+certaines erreurs sont plus coûteuses que d'autres.
+"""
+
+
+
+
 #============ métriques du jeu d'entrainement
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
@@ -162,6 +183,48 @@ print("Training Accuracy = ", acc_score_train.round(3))
 print("Training Precision = ", precision_train.round(3))
 print("Training Recall = ", recall_train.round(3))
 print("F1 train = ", F1_train.round(3))
+
+
+"""
+>> PRECISION:
+Un "precision_score" de 78 % fait référence à la précision de notre modèle de classification. 
+La précision évalue la capacité du modèle à faire des prédictions correctes parmi les exemples 
+qu'il a classés comme positifs (vrais positifs) par rapport à l'ensemble des exemples qu'il a classés 
+comme positifs (vrais positifs + faux positifs).
+
+Une précision de 78 %" signifie que le modèle a correctement classé 78 % des survivants. 
+Cela indique que le modèle a une capacité relativement élevée à éviter de faire de fausses prédictions positives. 
+En d'autres termes, lorsque le modèle prédit que quelqu'un a survécu, il a raison dans environ 78 % des cas.
+
+
+>> RECALL:
+Le rappel est une mesure de performance du modèle de classification.
+Le rappel est une mesure qui évalue la capacité de notre modèle à identifier 
+la totalité des exemples positifs (personnes ayant survécues) dans un ensemble de données. 
+Plus précisément, le rappel mesure la proportion des réellement positifs (vrais survivants) que 
+le modèle a correctement identifiés par rapport au nombre total de survivants (vrais ou faux) présents dans les données.
+
+Un rappel de 71 % signifie que le modèle a correctement identifié 71 % des survivants dans l'ensemble de données, 
+ce qui est généralement considéré comme un bon résultat. 
+Cependant, cela signifie également que 29 % de survivants n'ont pas été correctement identifiés par le modèle.
+
+
+>> F1_SCORE
+Un F1-score mesure la performance du modèle de classification. 
+Le F1-score est calculé à partir de deux autres métriques de performance : la précision (precision) et le rappel (recall).
+
+Le F1-score est une métrique particulièrement utile lorsque les classes que vous essayez de prédire ne sont pas équilibrées, 
+c'est-à-dire lorsque l'une des classes est beaucoup plus fréquente que l'autre. 
+Il combine la précision et le rappel en une seule valeur qui tient compte à la fois des vrais positifs 
+(prédictions correctes de la classe positive), des faux positifs (prédictions incorrectes de la classe positive) 
+et des faux négatifs (cas où la classe positive réelle n'a pas été prédite correctement).
+
+Un F1-score de 74 % indique que le modèle a une performance équilibrée en termes de précision et de rappel, 
+ce qui signifie qu'il est capable de faire des prédictions correctes pour la classe des survivants (positifs) 
+tout en minimisant les faux positifs (personnes  décédées prédites comme ayant survécues). 
+Plus le F1-score est élevé, meilleure est la performance du modèle en termes de classification.
+"""
+
 
 #============ évaluation du modèle sur le jeu de test
 cm_test = confusion_matrix(y_test, y_predict_test)
@@ -267,7 +330,7 @@ F1_test = f1_score(y_test, y_predict_test)
 print("Testing Accuracy = ", acc_score_test.round(3))
 print("Testing Precision = ", precision_test.round(3))
 print("Testing Recall = ", recall_test.round(3))
-print("F1 test = ", F1_train.round(3))
+print("F1 test = ", F1_test.round(3))
 
 #============ table des métriques
 metrics = {}
@@ -293,8 +356,10 @@ importances = importances.sort_values(by='Coefficients', ascending=False)
 importances
 
 """
-1. on regarde le signe du coefficient. Si + alors il contribue à la survenance de la maladie. Sinon, effet contraire, il contribue à limiter voire contrecarrer la maladie.
-2. on regarde la valeur de l'exponentielle et si EXP > 1, alors on a plus de chances d'être POSITIF, sinon on a moins de chances d'être POSITIF à la maladie
+1. on regarde le signe du coefficient. Si + alors il contribue aux facteurs de survie. 
+Sinon, effet contraire, il contribue à limiter voire contrecarrer les chances de survie.
+2. on regarde la valeur de l'exponentielle et si EXP > 1, alors on a plus de chances d'être POSITIF, 
+sinon on a moins de chances d'être POSITIF, i.e de survivre.
 """
 
 #plt.figure(figsize = (20, 9))
