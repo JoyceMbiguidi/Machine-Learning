@@ -31,6 +31,9 @@ from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+import numpy as np
 
 #============ importation des données
 path = "https://raw.githubusercontent.com/JoyceMbiguidi/data/main/titanic.csv"
@@ -113,14 +116,33 @@ g_search = GridSearchCV(estimator=xgb_c, param_grid=param_grid,
 # ajustement du modele
 g_search.fit(x_train, y_train)
 
-# affichage des meilleurs paramètres
-print(g_search.best_params_)
+# affichage des meilleurs paramètres et le meilleur modele
+best_params = g_search.best_params_
+best_model = g_search.best_estimator_
+
+print(f"Best parameters found: {best_params}")
+print(f"Best model: {best_model}")
 
 
 # predictions sur ensemble de test
-y_pred = g_search.predict(y_test)
+y_pred = best_model.predict(x_test)
+mse = mean_squared_error(y_test, y_pred)
+print(f"Mean Squared Error on test set: {mse}")
 
 # accuracy
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
 
+# Get feature importances
+feature_importances = best_model.feature_importances_
+
+# Plot feature importances
+features = titanic_df.drop(["Survived"], axis=1).columns
+indices = np.argsort(feature_importances)
+
+plt.figure(figsize=(10, 6))
+plt.title('Feature Importances')
+plt.barh(range(len(indices)), feature_importances[indices], color='b', align='center')
+plt.yticks(range(len(indices)), [features[i] for i in indices])
+plt.xlabel('Relative Importance')
+plt.show()
