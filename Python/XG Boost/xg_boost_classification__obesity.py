@@ -109,12 +109,12 @@ y.shape
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, stratify=y, random_state=42)
 
 #============ Modele 1
-xgb_c = xgb.XGBClassifier(objective='binary:logistic', missing=None, seed=42)
+xgb_c = xgb.XGBClassifier(objective='binary:logistic', missing=1, seed=42)
 
 xgb_c.fit(x_train, y_train, verbose=True, eval_set=[(x_test, y_test)])
 
 # predictions sur ensemble de test
-y_pred = xgb_c.predict(y_test)
+y_pred = xgb_c.predict(x_test)
 
 # score du modèle : accuracy
 accuracy = accuracy_score(y_test, y_pred)
@@ -159,7 +159,7 @@ print(g_search.best_params_)
 
 
 # predictions sur ensemble de test
-y_pred = g_search.predict(y_test)
+y_pred = g_search.predict(x_test)
 
 # accuracy
 accuracy = accuracy_score(y_test, y_pred)
