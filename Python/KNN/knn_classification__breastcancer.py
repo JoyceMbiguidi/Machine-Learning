@@ -101,9 +101,9 @@ KNN_classifier.fit(x_train_scale, y_train)
 
 
 # Prédiction des probabilités sur l'ensemble de test
-y_test_predict      = KNN_classifier.predict(x_test_scale)
+y_test_predict = KNN_classifier.predict(x_test_scale)
 y_test_probs = KNN_classifier.predict_proba(x_test_scale)[:,1] 
-# les probabilités prédites sont rapportées pour les deux classes. On affiche la proba de l'achat !
+# les probabilités prédites sont rapportées pour les deux classes. On affiche la proba d'avoir le cancer !
 
 np.round(KNN_classifier.predict_proba(x_test_scale),3)[:5]
 
@@ -118,7 +118,7 @@ print(confusion_matrix(y_test, y_test_predict))
 print(classification_report(y_test, y_test_predict))
 
 
-# métriques faites maison
+# métriques
 def my_KNN_report(x_train_scale, y_train, x_test_scale, y_test, K=5, threshold=0.5):
     knn= KNeighborsClassifier(n_neighbors=K)
     knn.fit(x_train_scale, y_train)
@@ -144,12 +144,6 @@ def my_KNN_report(x_train_scale, y_train, x_test_scale, y_test, K=5, threshold=0
 
 
 my_KNN_report(x_train, y_train, x_test_scale, y_test, K=5, threshold=0.5)
-
-
-
-
-
-
 
 
 
