@@ -89,7 +89,7 @@ scaledX_df = pd.DataFrame(scaledX, columns = ['MedInc_', 'HouseAge_', 'AveRooms_
 scaledX_df.head()
 
 #============ on travaille désormais avec les données standardisées
-df = pd.concat([df['Price'], scaledX_df], axis = 1) # on merge les deux DF
+df = pd.concat([df_['Price'], scaledX_df], axis = 1) # on merge les deux DF
 df.head()
 
 #============ séparation des données : train - test
@@ -153,7 +153,7 @@ pos = np.arange(sorted_idx.shape[0]) + 0.5
 fig = plt.figure(figsize=(12, 6))
 plt.subplot(1, 2, 1)
 plt.barh(pos, feature_importance[sorted_idx], align="center")
-plt.yticks(pos, np.array(df.columns)[sorted_idx])
+plt.yticks(pos, np.array(scaledX_df.columns)[sorted_idx])
 plt.title("Feature Importance (MDI)")
 
 result = permutation_importance(
@@ -164,7 +164,7 @@ plt.subplot(1, 2, 2)
 plt.boxplot(
     result.importances[sorted_idx].T,
     vert=False,
-    labels=np.array(df.columns)[sorted_idx],
+    labels=np.array(scaledX_df.columns)[sorted_idx],
 )
 plt.title("Permutation Importance (test set)")
 fig.tight_layout()

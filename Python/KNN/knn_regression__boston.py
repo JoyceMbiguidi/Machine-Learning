@@ -74,9 +74,9 @@ predictions.head()
 sns.scatterplot(x=y_test, y=y_test_predict, alpha=0.6, size=y_test_predict, hue=y_test_predict)
 sns.regplot(x=y_test, y=y_test_predict, scatter=False, color='orange', label="Regression Line")
 
-plt.xlabel('wage réel', fontsize=14)
-plt.ylabel('wage prédit', fontsize=14)
-plt.title('wage réel vs wage prédit (jeu de test)', fontsize=17)
+plt.xlabel('medv (price) réel', fontsize=14)
+plt.ylabel('medv (price) prédit', fontsize=14)
+plt.title('medv (price) réel vs medv (price) prédit (jeu de test)', fontsize=17)
 
 plt.legend()
 

@@ -137,26 +137,26 @@ QUAND UTILISER LES METRIQUES SUIVANTES : ACCURACY, PRECISION, RAPPEL ET F1 SCORE
 Le choix entre les mesures de performance telles que l'accuracy, la précision, le rappel et le F1-score dépend 
 du contexte de votre tâche d'apprentissage automatique et des conséquences de différentes erreurs.
 
-1. **Accuracy (Exactitude)** :
-   - **Quand les classes sont équilibrées :** Si les classes de votre ensemble de données sont à peu près équilibrées 
+1. Accuracy (Exactitude) :
+   - Quand les classes sont équilibrées : Si les classes de votre ensemble de données sont à peu près équilibrées 
    (c'est-à-dire, il y a à peu près le même nombre d'exemples positifs et négatifs), alors l'accuracy peut être une 
    mesure appropriée. Elle évalue la proportion de prédictions correctes par rapport à l'ensemble des prédictions.
    
-   - **Quand toutes les erreurs sont équivalentes :** Si vous ne pouvez pas vous permettre de privilégier les 
+   - Quand toutes les erreurs sont équivalentes : Si vous ne pouvez pas vous permettre de privilégier les 
    faux positifs ou les faux négatifs, et que toutes les erreurs sont d'importance égale, l'accuracy peut être une bonne métrique.
 
-2. **Précision (Precision)** :
-   - **Quand les faux positifs sont coûteux :** La précision mesure la proportion de prédictions positives correctes 
+2. Précision (Precision) :
+   - Quand les faux positifs sont coûteux : La précision mesure la proportion de prédictions positives correctes 
    parmi toutes les prédictions positives. Si les faux positifs sont coûteux ou indésirables 
    (par exemple, dans le diagnostic médical), vous devriez privilégier la précision.
 
-3. **Rappel (Recall)** :
-   - **Quand les faux négatifs sont coûteux :** Le rappel mesure la proportion de vrais positifs parmi toutes les 
+3. Rappel (Recall) :
+   - Quand les faux négatifs sont coûteux : Le rappel mesure la proportion de vrais positifs parmi toutes les 
    valeurs réelles positives. Si les faux négatifs sont coûteux ou ont des conséquences graves (
        comme dans la détection de fraudes), alors le rappel est crucial.
 
-4. **F1-Score (Score F1)** :
-   - **Quand vous avez besoin d'un équilibre entre la précision et le rappel :** Le F1-Score est une métrique 
+4. F1-Score (Score F1) :
+   - Quand vous avez besoin d'un équilibre entre la précision et le rappel : Le F1-Score est une métrique 
    harmonique qui combine la précision et le rappel. Il est utile lorsque vous avez besoin d'un équilibre entre ces 
    deux métriques. C'est particulièrement important lorsque les classes sont déséquilibrées, et vous voulez éviter 
    des prédictions excessivement biaisées.
@@ -204,6 +204,7 @@ predictions.head(15)
 
 
 #============ rapport des métriques
+# why my_SVM_report is not defined ?
 my_SVM_report(x_train, y_train, x_test, y_test, C=1000, gamma=0.001)
 
 
