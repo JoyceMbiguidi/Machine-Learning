@@ -189,7 +189,7 @@ Rappel sur quelques paramètres :
    des valeurs faibles signifiant « loin » et des valeurs élevées signifiant « proche ».
 '''
 
-my_param_grid = {'C': [1,10,100], 'gamma': [1,0.1,0.01], 'kernel': ['rbf', 'linear']}
+my_param_grid = {'C': [1], 'gamma': [1,0.1], 'kernel': ['rbf']}
 
 '''
 nous avons défini une grille d'hyper paramètres pour un SVM avec un noyau (kernel) de type 'rbf' (radial basis function), 
