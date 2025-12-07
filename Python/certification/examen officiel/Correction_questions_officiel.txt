@@ -1,0 +1,289 @@
+## EXAMEN OFFICIEL - CORRECTION ##
+
+# Exercice 1
+1. La variable cible est le prix de vente, puisqu'on s'interesse aux valeurs des maisons.
+2. Les variables potentiellement explicatives sont :
+	- la surface habitable
+	- le nombre de chambres
+	- le nombre de salles de bains
+	- le quartier
+	- la proximité des commodités
+	- l'année de construction
+3. Nous sommes face à un problème de régression. Nous pouvons avoir recours à la regression linéaire multiple ou XGBoost par exemple.
+4. Ces algorithmes appartiennent à la famille d'algorithmes supervisés, car ils ont besoin d'une quantité d'information suffisantes nécessaires à leur entrainement.
+5. Avant entrainement du modèle, il est nécessaire :
+	- d'importer les données
+	- vérifier les types de colonnes
+	- vérifier les valeurs manquantes
+	- imputer les valeurs manquantes par des méthodes appropriées en fonction de la nature et la distribution des données
+	- standardiser, discrétiser ou dichotomiser les variables selon leurs natures et les objectifs recherchés
+	- séparer le jeu de données en deux partie. L'une pour l'entrainement (80%) et l'autre pour le test (20%)
+6. On peut se baser sur le RMSE et le R². Plus le RMSE est proche de 0, meilleur sera le modèle. Plus le R² est proche de 1, meilleur sera l'ajustement aux données.
+7. On peut utiliser des techniques de rééchantillonnage pour équilibrer les classes, soit en augmentant la proportion de la classe la moins représentée, soit en dimminuant la classe surreprésentée.
+8. En fonction de la nature des variables :
+	- quantitative : s'il s'agit d'une mesure de distance par exemple, on peut la convertir dans l'unité de mesure de notre choix, standardiser, normaliser ou discrétiser cette variable.
+	- qualitative : s'il s'agit de localisation d'un parc exemple, on peut dichotomiser la variable (dummy) afin d'avoir pour chaque modalité, un variable binaire (quantitative) acceptable par le modèle de régression.
+	Si l'ajout simultanée ou tour à tour de ces variables dégradent la qualité du modèle (R²), alors il conviendrait de ne pas les prendre en compte.
+9. Oui. La standardisation ou la normalisation permettent de mieux considérer le poids des variables numériques lorsqu'elles ont des ordres de grandeur différentes et surtout lorsqu'elles s'expriment dans des unités différentes.
+10. Comparer au moins deux modèles sur la base du RMSE et du R². Le meilleur modèle sera celui qui minimisera le mieux les erreurs (RMSE).
+
+
+# Exercice 2
+1. On peut utiliser des techniques telles que le sous-échantillonnage de la classe majoritaire, le sur-échantillonnage de la classe minoritaire, ou des méthodes hybrides comme SMOTE (Synthetic Minority Over-sampling Technique).
+2. Random Forest pour la classification, XGBoost pour la classification, régression logistique, Support Vector Machine...
+3. Algorithmes d'apprentissage supervisés.
+4. Critères d'évaluations du modèle :
+	- AUC-ROC (Area Under the Receiver Operating Characteristic Curve) : Évalue la capacité du modèle à distinguer entre les classes à différents seuils. Un AUC proche de 1 indique un bon modèle.
+	- Précision (Precision) : Mesure la proportion de vraies positives parmi les prédictions positives. Cela indique la fiabilité des prédictions de fraude.
+	- Rappel (Recall) : Mesure la proportion de vraies positives parmi les cas réels de fraude. Cela montre la capacité du modèle à détecter les fraudes.
+	- F1-Score : La moyenne harmonique de la précision et du rappel, utile pour évaluer les modèles lorsque les classes sont déséquilibrées.
+
+	Je prioriserais l'AUC-ROC car elle fournit une évaluation globale de la performance du modèle en prenant en compte les différents seuils de détection. Cela permet de déterminer si le modèle est capable de détecter les fraudes avec une bonne précision et un bon rappel.
+5. Les actions à mettre en place pour améliorer la précision sont :
+	- Ajuster les seuils de décision (treshold) : En augmentant le seuil de décision pour classer un cas comme positif, ont peut réduire le nombre de faux positifs.
+	- Utiliser des techniques de rééchantillonnage : En utilisant des techniques de rééchantillonnage, telles que SMOTE, pour équilibrer le nombre de cas positifs et négatifs, on peut améliorer la précision.
+	- Utiliser des modèles adaptés aux classes déséquilibrées : En utilisant des modèles adaptés aux classes déséquilibrées, tels que les modèles de boosting ou des forêts aléatoires pondérées, on peut améliorer la précision.
+	- Appliquer des poids aux classes (weight) : En appliquant des poids aux classes dans la fonction de coût pour donner plus d'importance à la classe positive, on peut améliorer la précision.
+6. Grid Search :
+	1. Importation des bibliothèques nécessaires
+	2. Préparation des données X et y ainsi que X_train, X_test, y_train, y_test
+	3. Définition du modèle (ex : RandomForestClassifier()) et des hyperparamètres à optimiser (n_estimators, max_depth, min_samples_split, min_samples_feaf, bootstrap)
+	4. Validation croisée (ex: k=5)
+7. L'augmentation du taux de faux positifs dans un modèle de détection de fraude peut être causée par plusieurs facteurs, dont :
+	1. Système de détection trop sensible : Le modèle peut être trop sensible aux variations dans les données, ce qui peut entraîner une augmentation du nombre de faux positifs.
+	2. Données d'entrainement biaisées : Les données d'entrainement peuvent être biaisées, ce qui peut conduire à un modèle qui est trop spécialisé dans la détection de certaines types de fraude et qui a du mal à généraliser à d'autres types de fraude.
+	3. Évolution des modèles de fraude : Les modèles de fraude peuvent évoluer au fil du temps, ce qui peut rendre le modèle de détection de fraude moins efficace.
+	4. Problèmes de qualité des données : Les données peuvent être de mauvaise qualité, ce qui peut entraîner des erreurs dans la détection de la fraude.
+8. Exemple de répartition :
+	80% pour l'entraînement et 20% pour le test (80/20)
+	70% pour l'entraînement et 30% pour le test (70/30)
+9. Quelques pistes :
+	- Réduire la complexité : Si j'utilise un modèle complexe (comme un Random Forest avec beaucoup d'arbres ou un réseau de neurones profond), je peux réduire sa complexité. Cela peut inclure la diminution du nombre d'arbres, la réduction de la profondeur des arbres, ou la simplification de l'architecture du modèle.
+	- Utiliser la régularisation : J'ajoute des techniques de régularisation pour contrôler la complexité du modèle. Par exemple, dans le cas des forêts aléatoires, je peux ajuster les paramètres max_depth, min_samples_split, et min_samples_leaf pour éviter le surapprentissage.
+	- Augmenter la taille des données d'entraînement : Augmenter la taille de l'ensemble de données d'entraînement. Cela peut être réalisé en collectant plus de données ou en utilisant des techniques d'augmentation de données.
+	- Utiliser la validation croisée : Appliquer la validation croisée pour évaluer la performance du modèle sur plusieurs sous-ensembles des données. Cela donnera une meilleure idée de la capacité de généralisation du modèle.
+10. Pour évaluer des modèles de détection de fraude, il est important de choisir des métriques qui prennent en compte les coûts et les conséquences des erreurs de classification.
+	- Si le coût des faux positifs est très élevé, la précision pourrait être une métrique plus pertinente. 
+	- Si le coût des faux négatifs est très élevé, le rappel pourrait être plus important.
+
+# Exercice 3
+(1) Quelle est la variable cible principale du jeu de données Boston ?
+	a. Nombre de pièces dans la maison
+	b. Taux de criminalité
+	c. Prix médian des maisons (MEDV) *
+	d. Zone industrielle
+
+(2) Combien de variables explicatives comporte le jeu de données Boston ?
+	a. 10
+	b. 13 *
+	c. 14
+	d. 15
+
+(3) Quel type d’analyse est recommandé pour la problématique étudiée ?
+	a. Classification
+	b. Clustering
+	c. Régression *
+	d. Analyse en composantes principales (ACP)
+
+(4) La colonne 'LSTAT' dans le jeu de données Boston indique :
+	a. Le taux de criminalité
+	b. L'indice de pollution
+	c. Le pourcentage de la population de statut socio-économique bas *
+	d. La moyenne du nombre de chambres par logement
+
+(5) Quelle est la nature de la variable cible dans le jeu de données Boston ?
+	a. Quantitative *
+	b. Qualitative
+	b. Binaire
+	c. Ordinale 
+
+(6) Pour réduire la multicolinéarité entre les variables, quelle technique est appropriée dans le cas du jeu de données Boston ?
+	a. Suppression des variables fortement corrélées *
+	b. Binarisation des variables continues
+	c. Utilisation de l'imputation par la moyenne
+
+(7) Lors de la gestion de données manquantes, laquelle des méthodes suivantes est la plus appropriée pour le jeu de données Boston ?
+	a. Remplacement par la médiane
+	b. Imputation avec KNN
+	c. Aucune, car il n’y a pas de valeurs manquantes *
+	d. Remplacement par zéro
+
+(8) Pour évaluer les performances d'un modèle de régression sur le jeu de données Boston, quelle métrique est la plus couramment utilisée ?
+	a. Accuracy
+	b. Mean Absolute Error (MAE) *
+	c. Area Under the Curve (AUC)
+	d. Entropie croisée
+
+(9) Quelle approche permet de visualiser l’effet d’une variable comme 'RM' (nombre moyen de pièces par logement) sur 'MEDV' ?
+	a. Matrice de confusion
+	b. Régression linéaire simple *
+	c. Analyse de cluster
+	d. Encodage one-hot
+
+(10) Si on souhaite inclure une variable catégorielle dans le jeu de données Boston (comme la région), quelle méthode est recommandée ?
+	a. Normalisation de la variable
+	b. Encodage one-hot *
+	c. Transformation logarithmique
+	d. Standardisation
+
+(11) Sans avoir standardisé les données, que vaut le RMSE avec les paramètres suivants : test_size=0.2, random_state=42 ?
+	a. 18.0
+	b. 4.92*
+	c. 4.98
+	d. 36.2
+
+(12) Sans avoir standardisé les données, que vaut le coefficient d'ajustement (R²) avec les paramètres suivants : test_size=0.2, random_state=42 ?
+	a. 0.368759
+	b. 8.668759
+	c. 0.786500
+	d. 0.668759*
+
+(13) Que signifie un coefficient négatif pour la variable 'CRIM' dans une régression linéaire où la cible est 'MEDV' (prix médian des maisons) ?
+	a. À mesure que le taux de criminalité augmente, le prix médian des maisons augmente également.
+	b. À mesure que le taux de criminalité augmente, le prix médian des maisons diminue. *
+	c. Il n’y a aucune relation entre le taux de criminalité et le prix des maisons.
+	d. Le modèle de régression est mal ajusté.
+
+(14) Comment interpréter la valeur exacte du coefficient pour 'CRIM' (-0,113056) ?
+	a. Une augmentation de 1 unité du taux de criminalité est associée à une diminution de 0,113056 du prix médian des maisons. *
+	b. Une augmentation de 1 unité du taux de criminalité est associée à une augmentation de 0,113056 du prix médian des maisons.
+	c. Une augmentation de 1 % du taux de criminalité fait augmenter le prix médian des maisons de 11,3 %.
+	d. Une augmentation de 10 % du taux de criminalité fait diminuer le prix médian des maisons de 1,13.
+
+(15) Si le coefficient 'CRIM' est négatif, quel est l'impact global du taux de criminalité sur les prix de l'immobilier ?
+	a. Cela signifie qu'un taux de criminalité plus élevé tend à dévaloriser les biens immobiliers. *
+	b. Cela signifie qu'un taux de criminalité plus élevé rend les maisons plus chères.
+	c. Cela n'a aucun impact sur les prix de l'immobilier.
+	d. Cela indique que la relation est inverse, mais seulement pour certains quartiers.
+
+(16) Si le modèle de régression montre un coefficient de 'CRIM' de -0,113056, mais une faible significativité, que peut-on conclure ?
+	a. Le taux de criminalité a un effet négatif certain sur les prix de l'immobilier.
+	b. Le taux de criminalité n’a pas d’effet concluant sur les prix de l’immobilier. *
+	c. Le taux de criminalité augmente le prix des maisons.
+	d. Le modèle est parfaitement valide pour toutes les interprétations.
+
+
+(17) Quelle variable impact le plus négativement la variable cible ?
+	a. crim
+	b. rm
+	c. nox*
+	d. ptratio
+
+(18) Si le coefficient de la variable 'CRIM' (taux de criminalité) est négatif, quelle recommandation peut-on faire ?
+	a. Augmenter les investissements dans la sécurité des quartiers pour potentiellement augmenter les valeurs immobilières. *
+ 	b. Réduire les efforts de sécurité, car cela n’a pas d'impact sur le marché immobilier.
+   	c. Encourager les entreprises à s'installer dans les zones à haute criminalité.
+   	d. Augmenter les taxes foncières dans les quartiers avec un taux de criminalité élevé.
+
+(19) Si la variable 'RM' (nombre moyen de pièces par logement) a un coefficient positif, quelle interprétation peut-on en tirer pour les promoteurs immobiliers ?
+   	a. Construire des logements avec un nombre moyen de pièces plus élevé pourrait augmenter leur valeur sur le marché. *
+	b. Réduire le nombre de pièces par logement pour diminuer les coûts de construction.
+   	c. Limiter la taille des logements pour optimiser l’espace.
+   	d. Construire des appartements plus petits pour répondre aux besoins du marché.
+
+(20) La variable 'DIS' (distance aux centres d'emploi) présente un coefficient négatif. Quelle recommandation pourrait-on en tirer ?
+   	a. Encourager les entreprises à se situer en périphérie pour attirer les acheteurs.
+   	b. Développer les infrastructures de transport pour réduire le temps de trajet vers les centres d'emploi. *
+   	c. Limiter les constructions près des centres d'emploi.
+   	d. Construire uniquement en zones rurales pour améliorer les ventes.
+
+(21) Si le coefficient de 'NOX' (concentration d'oxyde d'azote) est négatif, quelle action les autorités locales pourraient-elles envisager ?
+   	a. Augmenter les émissions d’oxyde d'azote.
+   	b. Réduire la pollution de l’air pour améliorer la qualité de vie et potentiellement augmenter la valeur immobilière. *
+   	c. Encourager les industries polluantes pour stimuler l’économie locale.
+   	d. Augmenter les zones industrielles proches des zones résidentielles.
+
+(22) Un coefficient positif pour la variable 'AGE' (proportion de logements anciens) suggère que les maisons plus anciennes sont préférées. Que pourrait faire un promoteur ?
+   	a. Construire uniquement des logements modernes.
+   	b. Investir dans la rénovation et la valorisation des logements anciens pour attirer les acheteurs. *
+   	c. Démolir les logements anciens pour construire du neuf.
+   	d. Limiter les offres de logements anciens.
+
+(23) Si le coefficient de la variable 'TAX' (taux d'imposition foncière) est négatif, quelle recommandation pourrait être pertinente pour la politique fiscale locale ?
+	a. Augmenter les taxes pour accroître les revenus de la ville.
+	b. Réduire les taxes foncières pour rendre les propriétés plus attractives et accessibles. *
+ 	c. Ne pas changer les taxes, car elles n’affectent pas les valeurs immobilières.
+   	d. Augmenter les impôts pour dissuader les investisseurs.
+
+(24) La variable 'LSTAT' (pourcentage de la population à faible statut socio-économique) présente un coefficient négatif. Quelle implication cela pourrait-il avoir pour les décideurs ?
+   	a. Investir dans des programmes d'inclusion sociale pour dynamiser l’économie des quartiers et augmenter les valeurs immobilières. *
+   	b. Éviter les programmes sociaux, car ils ne contribuent pas à l’économie.
+   	c. Augmenter les prix de l’immobilier dans les quartiers à faibles revenus.
+   	d. Réduire le développement immobilier dans ces quartiers.
+
+(25) Un coefficient positif pour la variable 'ZN' (proportion de terrains résidentiels de grande taille) pourrait suggérer quoi pour les promoteurs immobiliers ?
+	a. Se concentrer sur des projets de terrains résidentiels de grande taille pour capter un marché à forte valeur ajoutée. *
+   	b. Construire des immeubles résidentiels compacts pour optimiser l’espace.
+   	c. Limiter les grands terrains résidentiels pour augmenter la densité de population.
+   	d. Ne pas investir dans des terrains de grande taille.
+
+(26) Si la variable 'INDUS' (proportion de terrains industriels) a un coefficient négatif, quelle recommandation peut-on faire aux urbanistes ?
+	a. Limiter les zones industrielles proches des résidences pour améliorer l’attrait des quartiers résidentiels. *
+	b. Augmenter la présence de zones industrielles pour diversifier l’offre de logements.
+	c. Encourager les constructions industrielles dans les quartiers résidentiels.
+	d. Fusionner les zones résidentielles et industrielles pour réduire les coûts.
+
+
+correction : BostonHousing_corrigé_certif.py
+
+
+
+# Exercice 4
+* Partie 1 :
+(1) Lors de l’analyse exploratoire des données, quelle étape est essentielle ?
+   a. Calculer la moyenne des variables.
+   b. Vérifier la distribution des variables pour chaque espèce *
+   c. Préparer directement les données pour la modélisation.
+   d. Réduire la dimensionnalité du jeu de données.
+
+(2) Quelle méthode de visualisation serait la plus appropriée pour observer la relation entre les caractéristiques et l'espèce dans le jeu de données Iris ?
+   a. Histogramme
+   b. Nuage de points avec des couleurs distinctes pour chaque espèce *
+   c. Diagramme en camembert
+   d. Graphe circulaire
+
+(3) Pourquoi est-il important de vérifier la distribution des variables avant la modélisation ?
+   a. Pour éviter d’utiliser trop de données.
+   b. Pour identifier les variables avec des valeurs extrêmes ou des anomalies *
+   c. Pour éliminer les variables corrélées.
+   d. Pour tester les performances des modèles.
+
+(4) Quelle étape est recommandée pour préparer la variable cible 'species' avant de construire un modèle de classification ?
+   a. Supprimer la colonne 'species' pour simplifier le modèle.
+   b. Encoder 'species' en valeurs numériques ou en dummies pour une meilleure compatibilité avec les modèles *
+   c. Ajouter des valeurs aléatoires dans 'species'.
+   d. Ignorer la colonne 'species'.
+
+(5) Quelle est l’utilité de standardiser les variables avant la construction de certains modèles comme le SVM ?
+   a. Pour accélérer la vitesse d'entraînement en réduisant la taille du jeu de données.
+   b. Pour que les caractéristiques soient sur la même échelle, facilitant la convergence et améliorant la performance du modèle *
+   c. Pour augmenter artificiellement la variance des données.
+   d. Pour pouvoir utiliser des méthodes de clustering.
+
+(6) Lors du prétraitement des données, que faire si des valeurs manquantes sont détectées dans les variables ?
+   a. Ignorer les valeurs manquantes sans les traiter.
+   b. Remplacer les valeurs manquantes par la moyenne ou la médiane de chaque variable *
+   c. Supprimer entièrement les variables avec des valeurs manquantes.
+   d. Remplir les valeurs manquantes avec des valeurs aléatoires.
+
+(7) Si vous testez plusieurs modèles de classification comme SVM, KNN et Arbre de décision, quelle méthode utiliseriez-vous pour choisir le meilleur modèle ?
+   a. Le modèle qui prend le moins de temps pour s'entraîner.
+   b. Le modèle avec la plus grande précision sur le jeu d'entraînement.
+   c. Le modèle avec les meilleures performances sur le jeu de test, en utilisant des métriques comme l'accuracy, la précision, le rappel et le F1-score *
+   d. Le modèle avec le nombre le plus élevé de paramètres ajustables.
+
+(8) Pourquoi est-il utile d’analyser la matrice de confusion pour chaque modèle ?
+   a. Pour évaluer l'accuracy uniquement.
+   b. Pour comprendre les erreurs de classification et identifier les classes qui posent problème au modèle *
+   c. Pour comparer les coefficients des modèles.
+   d. Pour déterminer si les données sont biaisées.
+
+(9) Quelle proportion est souvent recommandée pour séparer le jeu de données en entraînement et en test ?
+   a. 50 % pour l'entraînement et 50 % pour le test.
+   b. 60 % pour l'entraînement et 40 % pour le test.
+   c. 70 % pour l'entraînement et 30 % pour le test *
+   d. 90 % pour l'entraînement et 10 % pour le test.
+
+
+* Partie 2 :
+	Correction : iris_corrigé_certif.py

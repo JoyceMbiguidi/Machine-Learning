@@ -1,0 +1,179 @@
+## EXAMEN BLANC - CORRECTION ##
+
+# Exercice 1
+(1) Au regard du type de données et de la problématique rencontrée par l’agence immobilière, quelle est la variable cible  selon vous ? 
+	a. NOX
+ 	b. LSTAT
+ 	c. MEDV*
+ 	d. CRIM
+ 	e. RM
+ 	f. AGE
+ 	g. ZN
+
+
+(2) Quelles variables peuvent potentiellement expliquer le phénomène décrit par l’agence immobilière ?
+	a. NOX
+ 	b. LSTAT
+ 	c. MEDV
+ 	d. CRIM
+ 	e. RM
+ 	f. AGE
+ 	g. ZN
+	h. Toutes sauf MEDV*
+
+
+(3) Quels types d’algorithmes peuvent répondre à la problématique de l’agence immobilière ? 
+	a. Régression linéaire multiple*
+	b. XGBoost pour la régression*
+	c. Régression logistique
+	d. K-Means
+	e. Random Forest pour la régression*
+
+
+(4) A quelle famille d’algorithme appartiennent ces algorithmes ?
+	a. Algorithmes non supervisés
+	b. Algorithmes supervisés*
+
+
+(5) Quelles sont les principales étapes de la préparation des données dans ce cas précis ?
+	a. Définition du problème
+	b. Collecte et exploration des données*
+	c. Prétraitement des données*
+	d. Feature engineering*
+	e. Split des données en ensembles d'entraînement et de test*
+	f. Sélection et entraînement du modèle
+	g. Évaluation du modèle
+	h. Optimisation et tuning du modèle
+	i. Validation croisée
+	j. Test final et interprétation des résultats
+	k. Déploiement du modèle
+	l. Suivi des performances et maintenance
+
+
+(6) Quels sont les critères de sélection du modèle qui prédira les prix de l’immobilier ?
+	a. Accuracy
+	b. F1-Score
+	c. RMSE*
+	d. R²*
+	e. ROC
+
+
+(7) Comment traiteriez-vous un cas où les données disponibles sont déséquilibrées, avec beaucoup plus de maisons de faible valeur que de maisons de grande valeur ?
+	a. Techniques de rééchantillonnage*
+	b. Suppression de valeurs en trop
+	c. Tirage aléatoire des lignes
+
+
+(8) Comment intègreriez-vous de nouvelles variables comme la proximité des écoles ou des parcs dans votre modèle existant, si elles sont de natures quantitatives ?
+	a. Standardisation*
+	b. Normalisation*
+	c. Passage en Logarithme
+	d. Discrétisation*
+	e. Dichotomiser (dummy ou one hot encoding)
+
+
+(9) Comment intègreriez-vous de nouvelles variables comme la proximité des écoles ou des parcs dans votre modèle existant, si elles sont de natures qualitatives ?
+	a. Standardisation
+	b. Normalisation
+	c. Passage en Logarithme
+	d. Discrétisation
+	e. Dichotomiser (dummy ou one hot encoding)*
+
+
+(10) Pourquoi standardiser ou normaliser les données avant de les utiliser dans un modèle ?
+	a. Pour réduire la complexité du modèle et augmenter la vitesse d'exécution
+	b. Pour obtenir des valeurs de sortie comprises entre 0 et 1
+	c. Pour rendre les données comparables en échelle*
+	d. Pour diminuer le nombre de features dans le dataset
+
+
+(11) Comment feriez-vous pour déterminer le meilleur modèle d’apprentissage automatique après l’avoir comparé avec un autre ?
+	a. En comparant leurs performances sur un ensemble de test*
+	b. En utilisant la validation croisée pour évaluer leur robustesse*
+	c. En prenant le modèle qui a la structure la plus complexe
+	d. En analysant leurs métriques de performance (comme l'accuracy, la précision, le rappel, ou le RMSE)*
+
+
+# Exercice 2
+(1) Supposons que vous disposez d'un jeu de données déséquilibré pour un projet de détection de fraude. Quelles techniques pourriez-vous utiliser pour équilibrer les classes ?
+	a. Sur-échantillonnage de la classe minoritaire*
+	b. Sous-échantillonnage de la classe majoritaire*
+	c. Utilisation de la régularisation L2
+	d. Génération de nouvelles instances synthétiques avec SMOTE (Synthetic Minority Over-sampling Technique)*
+	e. Utilisation de la validation croisée
+
+
+(2) Quels algorithmes  peuvent répondre à la problématique ?
+	a. Random Forest pour la classification*
+	b. Random Forest pour la régression
+	c. Régression logistique*
+	d. K-Means
+	e. Arbre de décision pour la classification*
+	f. Arbre de décision pour la régression
+	g. Machines à vecteurs de support (SVM)*
+
+
+(3) A quelle famille d’algorithme appartiennent ces algorithmes ?
+	a. Algorithmes non supervisés
+	b. Algorithmes supervisés*
+
+
+(4) Comment évalueriez-vous la performance d'un modèle de détection de fraude ?
+	a. En mesurant la précision (accuracy), mais uniquement dans les cas où les classes sont équilibrées.
+	b. En utilisant la précision (precision), le rappel (recall), le F1-score et l'AUC-ROC, particulièrement en cas de déséquilibre des classes.*
+	c. En se basant uniquement sur le taux de faux positifs pour éviter les erreurs de fraude non détectées.
+	d. En utilisant uniquement la matrice de confusion pour évaluer les performances globales du modèle.
+
+
+(5) Supposons que votre modèle de classification présente un rappel élevé mais une précision faible. Quelles actions pouvez-vous entreprendre pour améliorer la précision ?
+	a. Augmenter le seuil de décision pour classifier une instance comme positive.*
+	b. Réduire la taille de l'ensemble d'entraînement pour éviter l'overfitting.
+	c. Utiliser une technique de sur-échantillonnage de la classe minoritaire pour améliorer la balance des classes.
+	d. Appliquer une régularisation plus forte pour éviter les faux positifs.*
+
+
+(6) Comment utiliseriez-vous une recherche en grille (Grid Search) pour optimiser les hyperparamètres d'un modèle de Random Forest ?
+	a. En testant plusieurs valeurs pour chaque hyperparamètre et en choisissant les meilleures combinaisons basées sur les performances du modèle.*
+	b. En ajustant automatiquement tous les hyperparamètres à leurs valeurs optimales en fonction des données d'entraînement.
+	c. En sélectionnant manuellement les valeurs des hyperparamètres à partir d’une liste prédéfinie d'options.
+	d. En utilisant uniquement l'algorithme de Random Search pour optimiser les hyperparamètres de manière plus rapide.
+
+
+(7) Un modèle de détection de fraude a été déployé en production, mais vous remarquez une augmentation du taux de faux positifs. Quelles pourraient être les causes ?
+	a. Le seuil de décision du modèle a été augmenté, rendant le modèle plus strict pour classer une instance comme fraude.*
+	b. Le modèle a été formé avec un ensemble de données déséquilibrées, ce qui a conduit à une mauvaise généralisation.
+	c. Le modèle utilise une technique de sur-échantillonnage, ce qui a provoqué un biais vers la détection de la classe minoritaire.
+	e. Le modèle a été sur-optimisé pour maximiser le rappel, ce qui peut entraîner une augmentation des faux positifs.*
+
+
+(8) Comment les résoudre ?
+	a. Réduire le seuil de décision pour rendre le modèle moins strict dans la classification des fraudes.
+	b. Appliquer une régularisation plus forte pour éviter le surapprentissage et mieux généraliser sur de nouvelles données.*
+	c. Réévaluer et ajuster les hyperparamètres du modèle, notamment ceux affectant la classification des instances positives.*
+	d. Augmenter le sur-échantillonnage de la classe minoritaire pour améliorer la détection des fraudes.
+
+
+(9) Comment vous diviseriez votre jeu de données en ensembles d'entraînement et de test ?
+	a. En utilisant une division aléatoire simple de 70 % pour l'entraînement et 30 % pour le test. *
+	b. En appliquant une validation croisée pour assurer une évaluation plus robuste du modèle.
+	c. En utilisant uniquement les 50 % premiers exemples comme ensemble d'entraînement et les 50 % restants comme ensemble de test.
+	d. Aucune de ces propositions
+
+
+(10) Que feriez-vous si votre modèle de détection de fraude surperforme sur les données d'entraînement mais échoue sur les données de test ?
+	a. Vérifier si le modèle a été surajusté (overfitting) et appliquer une régularisation pour le rendre plus robuste. *
+	b. Augmenter la taille du jeu de données d'entraînement en ajoutant plus d'exemples de fraudes.
+	c. Réévaluer la distribution des classes et utiliser une technique d'échantillonnage pour équilibrer les classes dans le jeu de données d'entraînement. *
+	d. Réduire la complexité du modèle en diminuant le nombre de paramètres ou en utilisant un modèle plus simple.*
+
+
+(11) Il est fréquent de comparer les performances de plusieurs modèles d’apprentissage automatique. Comment feriez-vous pour déterminer lequel est le meilleur dans le cas en l’espèce ?
+	a. En comparant uniquement l'exactitude (accuracy) des modèles, car elle donne une vision globale des performances.
+	b. En utilisant des métriques adaptées aux données déséquilibrées, telles que la précision, le rappel et le F1-score, en plus de l'exactitude. *
+	c. En appliquant une validation croisée pour obtenir une estimation plus fiable des performances des modèles sur différents sous-ensembles de données. *
+	d. En choisissant le modèle qui a la meilleure performance sur les données d'entraînement, indépendamment de la performance sur les données de test.
+
+
+# Exercice 3
+	a. Accuracy = 100*
+	b. Correction : iris_exercice_examen_blanc.py

@@ -36,7 +36,7 @@ raw_df = pd.read_csv(path, sep = ";", decimal = ",")
 
 #============ copie du dataset brut
 ozone_df = raw_df
-ozone_df.head()
+print(ozone_df.head())
 
 #============ vérification des types
 ozone_df.dtypes
@@ -128,46 +128,46 @@ plt.axvline(x=0, color='.5')
 plt.subplots_adjust(left=.3)
 
 
-"""Peut-on améliorer le R² ? Si oui, de quelle(s) façon(s) ?"""
+# """Peut-on améliorer le R² ? Si oui, de quelle(s) façon(s) ?"""
 
-#============ MODELE 2 - entrainement du modèle avec stepwise
-# pip install stepwise-regression
-import statsmodels.formula.api as smf
-from stepwise_regression import step_reg
+# #============ MODELE 2 - entrainement du modèle avec stepwise
+# # pip install stepwise-regression
+# import statsmodels.formula.api as smf
+# from stepwise_regression import step_reg
 
-#============ statsmodels avec toutes les features du jeu d'entrainement
-# on passe de numpy array à un DataFrame
-x_train_df = pd.DataFrame(x_train, columns=['T9', 'T12', 'T15', 'Ne9', 'Ne12', 'Ne15', 'Vx9', 'Vx12', 'Vx15', 'maxO3v'])
-y_train_df = pd.DataFrame(y_train, columns=['maxO3'])
+# #============ statsmodels avec toutes les features du jeu d'entrainement
+# # on passe de numpy array à un DataFrame
+# x_train_df = pd.DataFrame(x_train, columns=['T9', 'T12', 'T15', 'Ne9', 'Ne12', 'Ne15', 'Vx9', 'Vx12', 'Vx15', 'maxO3v'])
+# y_train_df = pd.DataFrame(y_train, columns=['maxO3'])
 
-model_smf = smf.ols(formula='y_train_df ~ T9 + T12 + T15 + Ne9 + Ne12 + Ne15 + Vx9 + Vx12 + Vx15 + maxO3v', data = x_train_df).fit()
+# model_smf = smf.ols(formula='y_train_df ~ T9 + T12 + T15 + Ne9 + Ne12 + Ne15 + Vx9 + Vx12 + Vx15 + maxO3v', data = x_train_df).fit()
 
-#============ resultats de statsmodels
-print(model_smf.summary())
+# #============ resultats de statsmodels
+# print(model_smf.summary())
 
-#============ model avec stepwise
-backselect = step_reg.backward_regression(x_train_df, y_train_df, 0.05, verbose=True) # 0.05 est la valeur seuil p-value
-backselect
+# #============ model avec stepwise
+# backselect = step_reg.backward_regression(x_train_df, y_train_df, 0.05, verbose=True) # 0.05 est la valeur seuil p-value
+# backselect
 
-#============ nouveau modèle après stepwise
-model_smf = smf.ols(formula='y_train_df ~ T12 + Ne9 + maxO3v', data = x_train_df).fit()
-print(model_smf.summary())
+# #============ nouveau modèle après stepwise
+# model_smf = smf.ols(formula='y_train_df ~ T12 + Ne9 + maxO3v', data = x_train_df).fit()
+# print(model_smf.summary())
 
-#============ statsmodels avec toutes les features du jeu de test
-# on passe de numpy array à un DataFrame
-x_test_df = pd.DataFrame(x_test, columns=['T9', 'T12', 'T15', 'Ne9', 'Ne12', 'Ne15', 'Vx9', 'Vx12', 'Vx15', 'maxO3v'])
-y_test_df = pd.DataFrame(y_test, columns=['maxO3'])
+# #============ statsmodels avec toutes les features du jeu de test
+# # on passe de numpy array à un DataFrame
+# x_test_df = pd.DataFrame(x_test, columns=['T9', 'T12', 'T15', 'Ne9', 'Ne12', 'Ne15', 'Vx9', 'Vx12', 'Vx15', 'maxO3v'])
+# y_test_df = pd.DataFrame(y_test, columns=['maxO3'])
 
-model_smf = smf.ols(formula='y_test_df ~ T9 + T12 + T15 + Ne9 + Ne12 + Ne15 + Vx9 + Vx12 + Vx15 + maxO3v', data = x_test_df).fit()
+# model_smf = smf.ols(formula='y_test_df ~ T9 + T12 + T15 + Ne9 + Ne12 + Ne15 + Vx9 + Vx12 + Vx15 + maxO3v', data = x_test_df).fit()
 
-#============ resultats de statsmodels
-print(model_smf.summary())
+# #============ resultats de statsmodels
+# print(model_smf.summary())
 
-#============ model avec stepwise
-backselect = step_reg.backward_regression(x_test_df, y_test_df, 0.05, verbose=True) # 0.05 est la valeur seuil p-value
-backselect
+# #============ model avec stepwise
+# backselect = step_reg.backward_regression(x_test_df, y_test_df, 0.05, verbose=True) # 0.05 est la valeur seuil p-value
+# backselect
 
-#============ nouveau modèle après stepwise
-model_smf = smf.ols(formula='y_test_df ~ T12 + Ne9 + maxO3v', data = x_test_df).fit()
-print(model_smf.summary())
+# #============ nouveau modèle après stepwise
+# model_smf = smf.ols(formula='y_test_df ~ T12 + Ne9 + maxO3v', data = x_test_df).fit()
+# print(model_smf.summary())
 
